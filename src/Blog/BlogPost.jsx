@@ -6,7 +6,7 @@ function BlogPost(props) {
 
     return (
         <>
-            <Card className="max-w-[600px] h-[600px]">
+            <Card className="max-w-[34rem] h-[24rem]">
                 <CardHeader className="justify-between">
                     <div className="flex gap-5">
                         <Avatar isBordered radius="full" size="md"

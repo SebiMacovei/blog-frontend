@@ -18,7 +18,8 @@ theme: {
     indigo: colors.indigo,
     yellow: colors.yellow,
     red: colors.red,
-    amber: colors.amber
+    amber: colors.amber,
+    green: colors.green
   },
 },
 darkMode: "class",
