@@ -3,18 +3,32 @@ import {Button, Input} from "@nextui-org/react";
 import {UserIcon} from "./UserIcon.jsx";
 import {Layout} from "../Layout.jsx";
 import axios from "axios";
+import {useParams} from "react-router-dom";
 
-export function UserAdd() {
+export function UserEdit() {
+    let { id } = useParams();
+    console.log(id)
     const [newName, setName] = useState("")
     const [newUsername, setUsername] = useState("")
     const [newImg, setImg] = useState("")
+    useEffect(() => {
+        const headers = {
+            "Content-Type" : "application/json"
+        }
+        axios.get("http://127.0.0.1:3000/users/" + id, {
+            headers,data:null
+        }).then(response => {
+            setName(response.data.name)
+            setUsername(response.data.username)
+            setImg(response.data.img_url)
+        })
+    },[])
 
-
-    function addUser() {
+    function editUser() {
         if (newName === "" || newUsername === "" || newImg === "") {
             return;
         }
-        axios.post("http://127.0.0.1:3000/users",{
+        axios.patch("http://127.0.0.1:3000/users/" + id,{
             name: newName,
             username: newUsername,
             img_url: newImg
@@ -44,8 +58,8 @@ export function UserAdd() {
                     <Input onChange={e => setImg(e.target.value)} value={newImg} type="img_src" label="Sursa Imaginii"/>
                 </div>
                     <div className={"max-w-64"}>
-                        <Button onClick={e => addUser()} color="danger" variant="bordered" startContent={<UserIcon/>}>
-                            Add User
+                        <Button onClick={e => editUser()} color="danger" variant="bordered" startContent={<UserIcon/>}>
+                            Edit User
                         </Button>
                     </div>
             </div>
