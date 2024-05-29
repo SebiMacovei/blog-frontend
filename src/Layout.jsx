@@ -1,19 +1,19 @@
 import React from "react";
-import {Button, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
+import {Button, Card, CardBody, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
 import {Link, NavLink} from "react-router-dom";
 
 export function Layout(props) {
-    return (
-        <>
-            <Navbar>
+    return (<>
+        <div className="h-full bg-transparent">
+            <Navbar className={"flex max-w-full justify-between bg-lime-500"} maxWidth={"full"}>
                 <NavbarBrand>
-                    <p className="font-bold text-inherit">SEBITRANS</p>
+                    <p className="font-bold text-inherit">BLOGEST</p>
                 </NavbarBrand>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
                     <NavbarItem>
                         <NavLink
                             to="/"
-                            className={({ isActive }) => (isActive ? 'text-green-600 font-bold' : 'inactive')}
+                            className={({isActive}) => (isActive ? 'text-cyan-700 font-bold' : 'inactive')}
                         >
                             Home
                         </NavLink>
@@ -21,7 +21,7 @@ export function Layout(props) {
                     <NavbarItem>
                         <NavLink
                             to="/blog"
-                            className={({ isActive }) => (isActive ? 'text-green-600 font-bold' : 'inactive')}
+                            className={({isActive}) => (isActive ? 'text-cyan-700 font-bold' : 'inactive')}
                         >
                             Blog
                         </NavLink>
@@ -30,7 +30,7 @@ export function Layout(props) {
                     <NavbarItem>
                         <NavLink
                             to="/users"
-                            className={({ isActive }) => (isActive ? 'text-green-600 font-bold' : 'inactive')}
+                            className={({isActive}) => (isActive ? 'text-cyan-700 font-bold' : 'inactive')}
                         >
                             Users
                         </NavLink>
@@ -47,7 +47,14 @@ export function Layout(props) {
                     </NavbarItem>
                 </NavbarContent>
             </Navbar>
-            {props.children}
-        </>
+            <div className={"flex justify-center  px-72"}>
+                <Card className={"h-full px-40"}>
+                    <CardBody>
+                        {props.children}
+                    </CardBody>
+                </Card>
+            </div>
+        </div>
+    </>
     )
 }

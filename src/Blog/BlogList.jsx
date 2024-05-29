@@ -11,7 +11,7 @@ function BlogList(props) {
         const headers = {
             "Content-Type": "application/json",
         };
-        axios.get('http://127.0.0.1:3000/posts',{headers, data:null})
+        axios.get('http://127.0.0.1:3000/blog_posts',{headers, data:null})
             .then(function (response) {
                setPosts(response.data)
             })
@@ -23,9 +23,20 @@ function BlogList(props) {
             });
 
     }, [])
+
+        function deletePost(id){
+            const newArrayPosts = posts.filter(post => {
+                if(id !== post.id)
+                    return true
+                else
+                    return false
+            })
+            setPosts(newArrayPosts)
+        }
     return (
         <>
             <Layout>
+
                 <Link className={"flex justify-center pb-24 pt-16"} to={"add"}>
                     <Button color="primary" variant="ghost">
                         New Blog
@@ -41,6 +52,7 @@ function BlogList(props) {
                                          followers={post.followers}
                                          date={post.date}
                                          key={post.id}
+                                         deletePost={deletePost}
                         >< /BlogPost>
                     })}
                 </div>
