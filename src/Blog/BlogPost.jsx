@@ -2,17 +2,20 @@ import React from "react";
 import {Avatar, Button, Card, CardBody, CardFooter, CardHeader} from "@nextui-org/react";
 import {UserIcon} from "../User/UserIcon.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function BlogPost(props) {
     const [isFollowed, setIsFollowed] = React.useState(false);
-
+    const navigate = useNavigate();
     function deletePost(id) {
         axios.delete("http://127.0.0.1:3000/blog_posts/" + id)
             .then(response => {
-           props.deletePost(id)
-        })
+                props.deletePost(id)
+            })
     }
-
+    function editPost(id){
+        navigate("/blog/edit/"+ id);
+    }
     return (
         <>
             <Card className="max-w-[34rem] h-[24rem]">
@@ -31,10 +34,16 @@ function BlogPost(props) {
                             {isFollowed ? "Unfollow" : "Follow"}
                         </Button>
                     </div>
-                    <Button onClick={e => deletePost(props.id)} color="danger" variant="bordered"
-                            startContent={<UserIcon/>}>
-                        DELETE POST
-                    </Button>
+                    <div className={"flex gap-4"}>
+                        <Button onClick={() => editPost(props.id)} color="secondary" variant="shadow">
+                            EDIT
+                        </Button>
+                        <Button onClick={e => deletePost(props.id)} color="danger" variant="bordered"
+                                startContent={<UserIcon/>}>
+                            DELETE POST
+                        </Button>
+
+                    </div>
                 </CardHeader>
                 <CardBody className="px-3 py-0 text-small text-default-400 align-center">
                     <div className={"text-center"}>

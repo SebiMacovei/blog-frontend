@@ -10,6 +10,7 @@ import BlogList from "./Blog/BlogList.jsx";
 import {UserAdd} from "./User/UserAdd.jsx";
 import {BlogAdd} from "./Blog/BlogAdd.jsx";
 import {UserEdit} from "./User/UserEdit.jsx";
+import {BlogEdit} from "./Blog/BlogEdit.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
         <NextUIProvider>
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route exact path="/users/add" element={<UserAdd/>}/>
                     <Route exact path="/users/edit/:id" element={<UserEdit/>}/>
                     <Route exact path="/blog/add" element={<BlogAdd/>}/>
+                    <Route exact path="/blog/edit/:id" element={<BlogEdit/>}/>
                 </Routes>
             </BrowserRouter>
         </NextUIProvider>
