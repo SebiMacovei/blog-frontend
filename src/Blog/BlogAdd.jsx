@@ -1,26 +1,39 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Layout} from "../Layout.jsx";
 import {Button, Input} from "@nextui-org/react";
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from "axios";
-import {UserIcon} from "../User/UserIcon.jsx";
-
+import {Select, SelectItem} from "@nextui-org/react";
 
 export function BlogAdd() {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
-
+    const [users, setUsers] = useState([])
+    const [author, setAuthor] = useState("")
     function addPost() {
         axios.post("http://127.0.0.1:3000/blog_posts", {
             title: title,
-            content: content
+            content: content,
+            author: author
         }).then(response => {
             setTitle("")
             setContent("")
             window.location.href = "/blog"
         })
     }
+
+    useEffect(() => {
+        axios.get("http://127.0.0.1:3000/users")
+            .then(response => {
+                const options = response.data.map(user => {
+                  return {key: user.name, label: user.name}
+                })
+                setUsers(options)
+            })
+    },[])
+
+
     return (
         <Layout>
             <div className={"flex h-[calc(100%-64px)] justify-center items-center"}>
@@ -60,10 +73,26 @@ export function BlogAdd() {
                                   setContent(editor.getData());
                               }}
                     />
-                    <div className={"flex justify-center"}>
-                        <Button onClick={e => addPost()} color="success">
-                            ADD POST
-                        </Button>
+                    <div className={"flex flex-row justify-around"}>
+                        <Select
+                            key={"warning"}
+                            color={"warning"}
+                            label="Users"
+                            placeholder="Select User"
+                            className="max-w-xs"
+                            onChange = {e => setAuthor(e.target.value)}
+                        >
+                            {users.map((user) => (
+                                <SelectItem key={user.key}>
+                                    {user.label}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                        <div className={"flex align-center items-center"}>
+                            <Button onClick={e => addPost()} color="success">
+                                ADD POST
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>

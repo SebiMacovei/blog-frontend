@@ -1,30 +1,43 @@
 import React, {useEffect, useState} from "react";
 import {Layout} from "../Layout.jsx";
-import {Button, Input} from "@nextui-org/react";
+import {Button, Input, Select, SelectItem} from "@nextui-org/react";
 import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import axios from "axios";
 import {useParams} from "react-router-dom";
 
-
-
 export function BlogEdit(props) {
     const [title, setTitle] = useState("")
     const [content, setContent] = useState("")
+    const [users, setUsers] = useState([])
+    const [author, setAuthor] = useState("")
     let {id} = useParams()
+
+
+
+    useEffect(() => {
+        axios.get("http://127.0.0.1:3000/users")
+            .then(response => {
+                const options = response.data.map(user => {
+                    return {key: user.name, label: user.name}
+                })
+                setUsers(options)
+            })
+    }, [])
     useEffect(() => {
         axios.get("http://127.0.0.1:3000/blog_posts/" + id)
             .then(response => {
                 console.log(response.data)
                 setTitle(response.data.title)
                 setContent(response.data.content)
+                setAuthor(response.data.author)
             })
-    },[])
-    console.log(title)
-     const editPost = () => {
+    }, [])
+    const editPost = () => {
         axios.patch("http://127.0.0.1:3000/blog_posts/" + id, {
             title: title,
-            content: content
+            content: content,
+            author: author
         }).then(response => {
             setTitle("")
             setContent("")
@@ -68,14 +81,31 @@ export function BlogEdit(props) {
                     <CKEditor color={"blue"}
                               editor={ClassicEditor}
                               data={content}
-                              onChange={(event,editor) => {
+                              onChange={(event, editor) => {
                                   setContent(editor.getData());
                               }}
                     />
-                    <div className={"flex justify-center"}>
-                        <Button onClick={e => editPost()} color="success">
-                            EDIT POST
-                        </Button>
+                    <div className={"flex flex-row justify-around"}>
+                        <Select
+                            key={"warning"}
+                            color={"warning"}
+                            label="Users"
+                            placeholder="Select User"
+                            className="max-w-xs"
+                            selectedKeys ={[author]}
+                            onChange={e => setAuthor(e.target.value)}
+                        >
+                            {users.map((user) => (
+                                <SelectItem key={user.key}>
+                                    {user.label}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                        <div className={"flex justify-center"}>
+                            <Button onClick={e => editPost()} color="success">
+                                EDIT POST
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
