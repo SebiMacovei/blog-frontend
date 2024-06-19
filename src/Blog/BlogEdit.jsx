@@ -16,7 +16,11 @@ export function BlogEdit(props) {
 
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:3000/users")
+        axios.get("http://127.0.0.1:3000/users",{
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": localStorage.getItem("token")
+            }})
             .then(response => {
                 const options = response.data.map(user => {
                     return {key: user.name, label: user.name}
@@ -25,7 +29,11 @@ export function BlogEdit(props) {
             })
     }, [])
     useEffect(() => {
-        axios.get("http://127.0.0.1:3000/blog_posts/" + id)
+        axios.get("http://127.0.0.1:3000/blog_posts/" + id,{
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": localStorage.getItem("token")
+            }})
             .then(response => {
                 console.log(response.data)
                 setTitle(response.data.title)
@@ -38,7 +46,11 @@ export function BlogEdit(props) {
             title: title,
             content: content,
             author: author
-        }).then(response => {
+        },{
+            headers: {
+                "Content-Type": "application/json",
+                    "authorization": localStorage.getItem("token")
+            }}).then(response => {
             setTitle("")
             setContent("")
             window.location.href = "/blog"

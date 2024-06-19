@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, Input} from "@nextui-org/react";
-import {UserIcon} from "./UserIcon.jsx";
+import {UserIcon} from "../Authentication/UserIcon.jsx";
 import {Layout} from "../Layout.jsx";
 import axios from "axios";
 import {useParams} from "react-router-dom";
@@ -13,7 +13,8 @@ export function UserEdit() {
     const [newImg, setImg] = useState("")
     useEffect(() => {
         const headers = {
-            "Content-Type" : "application/json"
+            "Content-Type" : "application/json",
+            "authorization": localStorage.getItem("token")
         }
         axios.get("http://127.0.0.1:3000/users/" + id, {
             headers,data:null
@@ -32,7 +33,11 @@ export function UserEdit() {
             name: newName,
             username: newUsername,
             img_url: newImg
-        }).then(response => {
+        },{
+            headers: {
+                "Content-Type": "application/json",
+                    "authorization": localStorage.getItem("token")
+            }}).then(response => {
             setName("")
             setUsername("")
             setImg("")

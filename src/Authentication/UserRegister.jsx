@@ -4,24 +4,19 @@ import {UserIcon} from "./UserIcon.jsx";
 import {Layout} from "../Layout.jsx";
 import axios from "axios";
 
-export function UserAdd() {
-    const [newName, setName] = useState("")
-    const [newUsername, setUsername] = useState("")
-    const [newImg, setImg] = useState("")
-
+export function UserRegister() {
+    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
 
     function addUser() {
-        if (newName === "" || newUsername === "" || newImg === "") {
+        if (email === "" || password === "" ) {
             return;
         }
-        axios.post("http://127.0.0.1:3000/users",{
-            name: newName,
-            username: newUsername,
-            img_url: newImg
+        axios.post("http://127.0.0.1:3000/signup",{
+            "user":{ email: email, password: password }
         }).then(response => {
-            setName("")
-            setUsername("")
-            setImg("")
+            setPassword("")
+            setEmail("")
             window.location.href ="/users";
         })
     }
@@ -32,16 +27,11 @@ export function UserAdd() {
                 <div className={"border border-amber-500"}>
                     Date Utilizator:
                 </div>
-
                 <div className={"max-w-64"}>
-                    <Input onChange={e => setName(e.target.value)} value={newName} type="name" label="Name"/>
+                    <Input onChange={e => setEmail(e.target.value)} value={email} label="Email"/>
                 </div>
                 <div className={"max-w-64"}>
-                    <Input onChange={e => setUsername(e.target.value)} value={newUsername} type="username"
-                           label="Username"/>
-                </div>
-                <div className={"max-w-64"}>
-                    <Input onChange={e => setImg(e.target.value)} value={newImg} type="img_src" label="Sursa Imaginii"/>
+                    <Input onChange={e => setPassword(e.target.value)} value={password} type="password" label="Password"/>
                 </div>
                     <div className={"max-w-64"}>
                         <Button onClick={e => addUser()} color="danger" variant="bordered" startContent={<UserIcon/>}>

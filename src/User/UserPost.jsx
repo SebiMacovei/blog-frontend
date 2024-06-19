@@ -1,6 +1,6 @@
 import React from "react";
 import {Card, CardFooter, Image, Button} from "@nextui-org/react";
-import {UserIcon} from "./UserIcon.jsx";
+import {UserIcon} from "../Authentication/UserIcon.jsx";
 import {Link} from "react-router-dom";
 
 function UserPost(props) {

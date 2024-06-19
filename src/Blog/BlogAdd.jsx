@@ -11,11 +11,17 @@ export function BlogAdd() {
     const [content, setContent] = useState("")
     const [users, setUsers] = useState([])
     const [author, setAuthor] = useState("")
+
     function addPost() {
         axios.post("http://127.0.0.1:3000/blog_posts", {
             title: title,
             content: content,
             author: author
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": localStorage.getItem("token")
+            }
         }).then(response => {
             setTitle("")
             setContent("")
@@ -24,14 +30,19 @@ export function BlogAdd() {
     }
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:3000/users")
+        axios.get("http://127.0.0.1:3000/users",{
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": localStorage.getItem("token")
+            }
+        })
             .then(response => {
                 const options = response.data.map(user => {
-                  return {key: user.name, label: user.name}
+                    return {key: user.email, label: user.email}
                 })
                 setUsers(options)
             })
-    },[])
+    }, [])
 
 
     return (
@@ -40,36 +51,36 @@ export function BlogAdd() {
                 <div
                     className="flex max-w-[600px] max-h-[600px] flex-col gap-6 px-8 py-8 rounded-2xl flex justify-center items-top bg-amber-200 from-pink-500 to-yellow-500 text-white shadow-lg">
                     <Input onChange={e => setTitle(e.target.value)}
-                        label="Title:"
-                        isClearable
-                        radius="lg"
-                        classNames={{
-                            label: "text-black/50 dark:text-white/90",
-                            input: [
-                                "bg-red-200",
-                                "text-black/90 dark:text-white/90",
-                                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                            ],
-                            innerWrapper: "bg-red-200",
-                            inputWrapper: [
-                                "shadow-xl",
-                                "bg-red-200",
-                                "dark:bg-default/60",
-                                "backdrop-blur-xl",
-                                "backdrop-saturate-200",
-                                "hover:bg-default-200/70",
-                                "dark:hover:bg-default/70",
-                                "group-data-[focus=true]:bg-default-200/50",
-                                "dark:group-data-[focus=true]:bg-default/60",
-                                "!cursor-text",
-                            ],
-                        }}
-                        placeholder="Add a title to your blog..."
+                           label="Title:"
+                           isClearable
+                           radius="lg"
+                           classNames={{
+                               label: "text-black/50 dark:text-white/90",
+                               input: [
+                                   "bg-red-200",
+                                   "text-black/90 dark:text-white/90",
+                                   "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                               ],
+                               innerWrapper: "bg-red-200",
+                               inputWrapper: [
+                                   "shadow-xl",
+                                   "bg-red-200",
+                                   "dark:bg-default/60",
+                                   "backdrop-blur-xl",
+                                   "backdrop-saturate-200",
+                                   "hover:bg-default-200/70",
+                                   "dark:hover:bg-default/70",
+                                   "group-data-[focus=true]:bg-default-200/50",
+                                   "dark:group-data-[focus=true]:bg-default/60",
+                                   "!cursor-text",
+                               ],
+                           }}
+                           placeholder="Add a title to your blog..."
                     />
                     <CKEditor color={"blue"}
                               editor={ClassicEditor}
                               data=""
-                              onChange={(event,editor) => {
+                              onChange={(event, editor) => {
                                   setContent(editor.getData());
                               }}
                     />
@@ -80,7 +91,7 @@ export function BlogAdd() {
                             label="Users"
                             placeholder="Select User"
                             className="max-w-xs"
-                            onChange = {e => setAuthor(e.target.value)}
+                            onChange={e => setAuthor(e.target.value)}
                         >
                             {users.map((user) => (
                                 <SelectItem key={user.key}>

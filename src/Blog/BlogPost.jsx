@@ -1,14 +1,19 @@
 import React from "react";
 import {Avatar, Button, Card, CardBody, CardFooter, CardHeader} from "@nextui-org/react";
-import {UserIcon} from "../User/UserIcon.jsx";
+import {UserIcon} from "../Authentication/UserIcon.jsx";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function BlogPost(props) {
     const [isFollowed, setIsFollowed] = React.useState(false);
     const navigate = useNavigate();
     function deletePost(id) {
-        axios.delete("http://127.0.0.1:3000/blog_posts/" + id)
+        axios.delete("http://127.0.0.1:3000/blog_posts/" + id, {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": localStorage.getItem("token")
+            }
+        })
             .then(response => {
                 props.deletePost(id)
             })
@@ -66,7 +71,9 @@ function BlogPost(props) {
                     <div className="flex gap-1">
                         <p className="font-semibold text-default-400 text-small">{props.date}</p>
                     </div>
-
+                    <Link to={"/blog/" + props.id}>
+                        <Button>Comments</Button>
+                    </Link>
 
                 </CardFooter>
             </Card>

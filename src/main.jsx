@@ -5,12 +5,14 @@ import {NextUIProvider} from "@nextui-org/react";
 import ReactDOM from 'react-dom/client'
 import HomePage from "./HomePage.jsx";
 import './index.css'
-import UsersList from "./User/UsersList.jsx";
+import UsersList from "./././User/UsersList.jsx";
 import BlogList from "./Blog/BlogList.jsx";
-import {UserAdd} from "./User/UserAdd.jsx";
+import {UserRegister} from "././Authentication/UserRegister.jsx";
 import {BlogAdd} from "./Blog/BlogAdd.jsx";
-import {UserEdit} from "./User/UserEdit.jsx";
+import {UserEdit} from "./././User/UserEdit.jsx";
 import {BlogEdit} from "./Blog/BlogEdit.jsx";
+import {Login} from "./././Authentication/Login.jsx";
+import {BlogView} from "./Blog/BlogView.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
         <NextUIProvider>
@@ -19,7 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route exact path="/" element={<HomePage/>}/>
                     <Route exact path="/blog" element={<BlogList/>}/>
                     <Route exact path="/users" element={<UsersList/>}/>
-                    <Route exact path="/users/add" element={<UserAdd/>}/>
+                    <Route exact path="/users/signup" element={<UserRegister/>}/>
+                    <Route exact path="/users/login" element={<Login/>}/>
+                    <Route exact path="/blog/:id" element={<BlogView/>}/>
                     <Route exact path="/users/edit/:id" element={<UserEdit/>}/>
                     <Route exact path="/blog/add" element={<BlogAdd/>}/>
                     <Route exact path="/blog/edit/:id" element={<BlogEdit/>}/>
